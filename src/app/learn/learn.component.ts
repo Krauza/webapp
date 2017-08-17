@@ -11,7 +11,9 @@ import { Params, ActivatedRoute } from "@angular/router";
 
 export class LearnComponent implements OnInit {
   private boxId: string;
-  public card: Card = null;
+  private card: Card = null;
+  private displayCardText: string;
+  private firstSide: boolean = true;
 
   constructor(private cardService: CardService,  private route: ActivatedRoute) { }
 
@@ -23,9 +25,17 @@ export class LearnComponent implements OnInit {
   }
 
   private getNextCard() {
+    this.card = null;
+
     this.cardService.getNextCard(this.boxId).subscribe((card) => {
       this.card = card;
-      console.log(this.card);
+      this.displayCardText = card.obverse;
+      this.firstSide = true;
     });
+  }
+
+  private answer(knew) {
+    this.firstSide = false;
+    this.displayCardText = this.card.reverse;
   }
 }

@@ -1,3 +1,11 @@
-<p>
-  learn works!
-</p>
+<div id="card" *ngIf="card;else spinner">
+  {{ card.obverse }}
+  <div *ngIf="firstSide;else second_side">
+    <button (click)="answer(false)">I don't know</button>
+    <button (click)="answer(true)">I know</button>
+  </div>
+  <ng-template #second_side>
+    <button (click)="getNextCard(true)">Next</button>
+  </ng-template>
+</div>
+<ng-template #spinner>Loading...</ng-template>

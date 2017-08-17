@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { Card } from "../models/card";
 
 interface CardResponse {
-  card: Card
+  nextCard: Card
 }
 
 @Injectable()
@@ -57,6 +57,6 @@ export class CardService {
       variables: {
         boxId: boxId
       }
-    }).map(({data}) => data.card)
+    }).map(({data}) => data.nextCard)
   }
 }
