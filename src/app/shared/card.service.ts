@@ -5,9 +5,14 @@ import 'rxjs/add/operator/map';
 
 import gql from 'graphql-tag';
 import { Card } from "../models/card";
+import {Box} from "../models/box";
 
 interface CardResponse {
   nextCard: Card
+}
+
+interface BoxResponse {
+  addAnswer: Box
 }
 
 @Injectable()
@@ -58,5 +63,28 @@ export class CardService {
         boxId: boxId
       }
     }).map(({data}) => data.nextCard)
+  }
+
+  addAnswer(boxId: string, cardId: string, answer: boolean): Observable<Box> {
+    const addAnswer = gql`
+      mutation addAnswer($answer: Boolean!, $boxId: String!, $cardId: String!) {
+        addAnswer(answer: $answer, box_id: $boxId, card_id: $cardId) {
+          box {
+            id
+            name
+          }
+        }
+      }
+    `;
+
+    console.log(boxId, cardId, answer);
+    return this.apollo.mutate<BoxResponse>({
+      mutation: addAnswer,
+      variables: {
+        boxId: boxId,
+        cardId: cardId,
+        answer: answer
+      }
+    }).map(({data}) => data.addAnswer);
   }
 }

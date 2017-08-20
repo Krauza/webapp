@@ -26,7 +26,6 @@ export class LearnComponent implements OnInit {
 
   private getNextCard() {
     this.card = null;
-
     this.cardService.getNextCard(this.boxId).subscribe((card) => {
       this.card = card;
       this.displayCardText = card.obverse;
@@ -37,5 +36,8 @@ export class LearnComponent implements OnInit {
   private answer(knew) {
     this.firstSide = false;
     this.displayCardText = this.card.reverse;
+    this.cardService.addAnswer(this.boxId, this.card.id, knew).subscribe((answer) => {
+      console.log(answer);
+    });
   }
 }
